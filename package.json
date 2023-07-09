@@ -1,0 +1,17 @@
+{
+  "name": "rollup-plugin-remove-others-console",
+  "version": "0.0.1",
+  "description": "Automatically remove console statements from other developers and only retain their own",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup --config"
+  },
+  "keywords": [],
+  "module": "src/index.js",
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^3.26.2"
+  }
+}
