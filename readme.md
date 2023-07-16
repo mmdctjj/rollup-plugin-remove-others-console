@@ -23,29 +23,5 @@ export default defineConfig({
 });
 ```
 
-### warn
-不建议在生产环境使用，如果打包只会留下打包者的console.log语句，可能会影响其他开发者调试，虽然这是个坏习惯！
-
-你可以根据据下面的例子使用vite官方方法drop所有console语句。
-
-```js
-//vite.config.js
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
- 
-export default defineConfig({
-    plugins: [vue()],
-    build: {
-        minify: 'terser',
-        terserOptions: {
-            compress: {
-                //生产环境时移除console
-                drop_console: true,
-                drop_debugger: true,
-            },
-        },
-    },
-})
-```
 ### LICENSE
 MIT
