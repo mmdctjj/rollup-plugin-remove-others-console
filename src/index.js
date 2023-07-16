@@ -1,5 +1,5 @@
 import childProcess from 'child_process';
-const os = require('os');
+import os from 'os';
 
 // 判断平台，win平台不支持grep
 const isWin = os.type() === 'Windows_NT'
