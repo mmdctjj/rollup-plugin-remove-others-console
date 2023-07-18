@@ -23,7 +23,10 @@ export default defineConfig({
 });
 ```
 ### warn
-不建议在生产环境使用，如果打包只会留下打包者的console.log语句，可能会影响其他开发者调试，虽然这是个坏习惯！
+
+#### 1.不建议在生产环境使用
+
+如果打包只会留下打包者的console.log语句，可能会影响其他开发者调试，虽然这是个坏习惯！
 
 你可以根据据下面的例子使用vite官方方法drop所有console语句。
 
@@ -46,6 +49,13 @@ export default defineConfig({
     },
 })
 ```
-
+#### 2. 特殊情况说明
+`catch`代码块中的 console 不会去除
+```js
+Promise()
+  .then(res => {})
+  .catch(err => console.log(err))
+/** useEffect(() => console.log(data), [data]) */
+```
 ### LICENSE
 MIT

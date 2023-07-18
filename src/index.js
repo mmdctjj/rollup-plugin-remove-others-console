@@ -32,7 +32,7 @@ const RollupPluginRemoveOthersConsole = () => {
 
         return rows.map((row, idx) => {
           if (removeLine.includes(idx)) {
-            return row.replace(/console\.log\((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*\)[;\n]?/g, '')
+            return row.replace(/console\.log\((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*\)[;\n]?/g, {})
           }
           return row
         }).join('\n')
