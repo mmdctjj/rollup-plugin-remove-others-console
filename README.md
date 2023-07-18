@@ -49,13 +49,9 @@ export default defineConfig({
     },
 })
 ```
-#### 2. 特殊情况说明
-`catch`代码块中的 console 不会去除
-```js
-Promise()
-  .then(res => {})
-  .catch(err => console.log(err))
-/** useEffect(() => console.log(data), [data]) */
-```
+#### 2. 请确保将处理的是最原始的文件
+
+由于插件严格依赖行判读git作者，所以该插件需要确保在可能会修改源文件的插件之前执行。
+
 ### LICENSE
 MIT
