@@ -1,8 +1,8 @@
 import childProcess from 'child_process';
-import os from 'os';
+import { type } from 'os';
 
 // 判断平台，win平台不支持grep
-const isWin = os.type() === 'Windows_NT'
+const isWin = type() === 'Windows_NT'
 const findStr = isWin ? 'findstr' : 'grep'
 
 const userName = childProcess.execSync(
@@ -30,12 +30,12 @@ const RollupPluginRemoveOthersConsole = () => {
           return ![userName, `Not Committed Yet`].includes(author)
         })
 
-        rows.map((row, idx) => {
+        return rows.map((row, idx) => {
           if (removeLine.includes(idx)) {
             return row.replace(/console\.log\((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*\)[;\n]?/g, '')
           }
           return row
-        })
+        }).join('\n')
       }
       return code
     }
