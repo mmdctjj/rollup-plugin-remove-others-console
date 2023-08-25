@@ -10,9 +10,9 @@ const findStr = isWin ? 'findstr' : 'grep';
 //   { encoding: 'utf-8' }
 // )
 
-const VitePluginRmOthersConsole = () => {
+const RollupPluginRemoveOthersConsole = () => {
 	return {
-		name: 'vite-plugin-rm-ohthers-console',
+		name: 'rollup-plugin-remove-ohthers-console',
 		enforce: 'pre',
 		transform: (code, id) => {
 			try {
@@ -29,8 +29,7 @@ const VitePluginRmOthersConsole = () => {
 							{ encoding: 'utf-8' }
 						);
 						const author = authorInfo.slice(authorInfo.indexOf(`author `) + 7);
-						// return ![userName, `Not Committed Yet`].includes(author);
-						return !(author.includes(userName) || author.includes('Not Committed Yet'));
+						return ![userName, `Not Committed Yet`].includes(author);
 					});
 
 					return rows
@@ -50,4 +49,4 @@ const VitePluginRmOthersConsole = () => {
 	};
 };
 
-export default VitePluginRmOthersConsole;
+export default RollupPluginRemoveOthersConsole;

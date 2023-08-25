@@ -5,41 +5,49 @@ import { type } from 'os';
 const isWin = type() === 'Windows_NT';
 const findStr = isWin ? 'findstr' : 'grep';
 
-const userName = childProcess.execSync(
-  `git config user.name`,
-  { encoding: 'utf-8' }
-);
+// const userName = childProcess.execSync(
+//   `git config user.name`,
+//   { encoding: 'utf-8' }
+// )
 
-const RollupPluginRemoveOthersConsole = () => {
+const VitePluginRmOthersConsole = () => {
+	return {
+		name: 'vite-plugin-rm-ohthers-console',
+		enforce: 'pre',
+		transform: (code, id) => {
+			try {
+				const userName = childProcess.execSync(`git config user.name`, { encoding: 'utf-8' });
 
-  return {
-    name: 'rollup-plugin-remove-ohthers-console',
-    enforce: "pre",
-    transform: (code, id) => {
-      if (!id.includes('node_modules') && code.includes(`console.log(`)) {
-        const rows = code.split('\n');
+				if (!id.includes('node_modules') && code.includes(`console.log(`)) {
+					const rows = code.split('\n');
 
-        const includesLines = rows.map((row, idx) => row.includes(`console.log(`) ? idx : undefined).filter(n => n);
+					const includesLines = rows.map((row, idx) => (row.includes(`console.log(`) ? idx : undefined)).filter(n => n);
 
-        const removeLine = includesLines.filter(line => {
-          const authorInfo = childProcess.execSync(
-            `git blame -L ${line+1},${line+1} --porcelain ${id} | ${findStr} "^author "`,
-            { encoding: 'utf-8' }
-          );
-          const author = authorInfo.slice(authorInfo.indexOf(`author `) + 7);
-          return ![userName, `Not Committed Yet`].includes(author)
-        });
+					const removeLine = includesLines.filter(line => {
+						const authorInfo = childProcess.execSync(
+							`git blame -L ${line + 1},${line + 1} --porcelain ${id} | ${findStr} "^author "`,
+							{ encoding: 'utf-8' }
+						);
+						const author = authorInfo.slice(authorInfo.indexOf(`author `) + 7);
+						// return ![userName, `Not Committed Yet`].includes(author);
+						return !(author.includes(userName) || author.includes('Not Committed Yet'));
+					});
 
-        return rows.map((row, idx) => {
-          if (removeLine.includes(idx)) {
-            return row.replace(/console\.log\((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*\)[;\n]?/g, `{}`)
-          }
-          return row
-        }).join('\n')
-      }
-      return code
-    }
-  }
+					return rows
+						.map((row, idx) => {
+							if (removeLine.includes(idx)) {
+								return row.replace(/console\.log\((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*\)[;\n]?/g, `{}`);
+							}
+							return row;
+						})
+						.join('\n');
+				}
+			} catch {
+				return code;
+			}
+			return code;
+		},
+	};
 };
 
-export { RollupPluginRemoveOthersConsole as default };
+export { VitePluginRmOthersConsole as default };

@@ -1,7 +1,7 @@
 {
 	"name": "vite-plugin-rm-others-console",
 	"version": "0.0.7",
-	"homepage": "https://github.com/DraculaPrince/vite-plugin-rm-others-console",
+	"homepage": "https://github.com/mmdctjj/rollup-plugin-remove-others-console",
 	"description": "Automatically remove console statements from other developers and only retain their own",
 	"main": "dist/index.js",
 	"scripts": {

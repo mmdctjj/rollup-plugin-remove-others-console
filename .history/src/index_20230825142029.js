@@ -10,9 +10,9 @@ const findStr = isWin ? 'findstr' : 'grep';
 //   { encoding: 'utf-8' }
 // )
 
-const VitePluginRmOthersConsole = () => {
+const RollupPluginRemoveOthersConsole = () => {
 	return {
-		name: 'vite-plugin-rm-ohthers-console',
+		name: 'rollup-plugin-remove-ohthers-console',
 		enforce: 'pre',
 		transform: (code, id) => {
 			try {
@@ -50,4 +50,4 @@ const VitePluginRmOthersConsole = () => {
 	};
 };
 
-export default VitePluginRmOthersConsole;
+export default RollupPluginRemoveOthersConsole;
