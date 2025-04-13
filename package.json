@@ -3,9 +3,21 @@
   "version": "0.0.7",
   "homepage": "https://github.com/mmdctjj/rollup-plugin-remove-others-console",
   "description": "Automatically remove console statements from other developers and only retain their own",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "exports": {
+    "require": {
+      "development": "./dist/index.js",
+      "production": "./dist/index.min.js"
+    },
+    "import": {
+      "development": "./dist/index.js",
+      "production": "./dist/index.min.js"
+    }
+  },
   "scripts": {
-    "build": "rollup --config"
+    "build": "rollup --config",
+    "build:dev": "cross-env BUILD=dev rollup --config",
+    "build:prod": "cross-env BUILD=prod rollup --config"
   },
   "keywords": [],
   "module": "src/index.js",
@@ -17,6 +29,8 @@
     "@babel/parser": "^7.26.2",
     "@babel/traverse": "^7.25.9",
     "@babel/types": "^7.26.0",
-    "rollup": "^3.26.2"
+    "cross-env": "^7.0.3",
+    "rollup": "^3.26.2",
+    "rollup-plugin-terser": "^7.0.2"
   }
 }
