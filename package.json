@@ -30,19 +30,16 @@
   "publishConfig": {
     "access": "public"
   },
-  "devDependencies": {
+  "dependencies": {
     "@babel/generator": "^7.26.2",
     "@babel/parser": "^7.26.2",
+    "@babel/runtime": "^7.27.1",
     "@babel/traverse": "^7.25.9",
     "@babel/types": "^7.26.0",
     "@types/babel__generator": "^7.27.0",
     "@types/babel__traverse": "^7.20.7",
     "@types/node": "^22.15.21",
     "cross-env": "^7.0.3",
-    "rollup": "^3.26.2",
-    "rollup-plugin-terser": "^7.0.2"
-  },
-  "dependencies": {
     "father": "^4.5.5"
   }
 }
