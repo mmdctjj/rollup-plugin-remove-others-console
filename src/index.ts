@@ -1,8 +1,8 @@
-const childProcess = require("child_process");
-const { parse } = require("@babel/parser");
-const generate = require("@babel/generator");
-const t = require("@babel/types");
-const traverse = require("@babel/traverse");
+import generate from "@babel/generator";
+import { parse, ParserPlugin } from "@babel/parser";
+import traverse from "@babel/traverse";
+import * as t from "@babel/types";
+import * as childProcess from "child_process";
 
 // 缓存作者信息和文件的最新提交哈希
 const authorCache = new Map();
@@ -14,7 +14,7 @@ const userName = childProcess.execSync(`git config user.name`, {
 });
 
 // 执行 git log，返回文件的所有作者
-const getFileAuthors = (id) => {
+const getFileAuthors = (id: string) => {
   // 获取文件的最新提交哈希
   const commitHash = childProcess
     .execSync(`git rev-parse ${id}`, { encoding: "utf-8" })
@@ -37,7 +37,7 @@ const getFileAuthors = (id) => {
 };
 
 // 执行 git blame，返回特定行的作者信息
-const getLineAuthor = (line, id) => {
+const getLineAuthor = (line: number, id: string) => {
   const authorInfo = childProcess.execSync(
     `git blame -L ${line},${line} --porcelain ${id}`,
     {
@@ -53,7 +53,7 @@ const RollupPluginRemoveOthersConsole = () => {
   return {
     name: "rollup-plugin-remove-others-console",
     enforce: "pre",
-    transform: (code, id) => {
+    transform: (code: string, id: string) => {
       if (!id.includes("node_modules") && code.includes("console.log")) {
         // 检查文件的作者列表
         const authorList = getFileAuthors(id);
@@ -68,13 +68,19 @@ const RollupPluginRemoveOthersConsole = () => {
         // 初始化 AST
         const ast = parse(code, {
           sourceType: "module",
-          plugins: ["jsx", "tsx", "vue", "typescript", "classProperties"],
+          plugins: [
+            "jsx",
+            "tsx",
+            "vue",
+            "typescript",
+            "classProperties",
+          ] as ParserPlugin[],
         });
 
-        const consoleLogLines = [];
+        const consoleLogLines: number[] = [];
 
         const visitor = {
-          CallExpression(path) {
+          CallExpression(path: any) {
             if (
               t.isMemberExpression(path.node.callee) &&
               t.isIdentifier(path.node.callee.object, { name: "console" }) &&
@@ -99,7 +105,7 @@ const RollupPluginRemoveOthersConsole = () => {
 
         // 遍历AST并替换console.log
         traverse(ast, {
-          CallExpression(path) {
+          CallExpression(path: any) {
             // 判断是否是 console.log
             if (
               t.isMemberExpression(path.node.callee) &&
@@ -139,7 +145,7 @@ const RollupPluginRemoveOthersConsole = () => {
       }
       return code;
     },
-  };
+  } as const;
 };
 
-module.exports = RollupPluginRemoveOthersConsole;
+export default RollupPluginRemoveOthersConsole;
